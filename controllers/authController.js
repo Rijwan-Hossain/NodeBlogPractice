@@ -50,7 +50,7 @@ const signinUser = async (req, res) => {
 
       // Create & send JWT token 
       const token = jwt.sign( 
-         {id: user._id}, 
+         {_id: user._id}, 
          'my_secret', 
          {expiresIn: '24h'} 
       ) 
@@ -68,8 +68,38 @@ const signinUser = async (req, res) => {
    } 
 } 
 
+const routeProtection = async (req, res, next) => { 
+   // Get token 
+   let token = req.headers.authorization 
+   if(!token) { 
+      return res.status(401).json({ message: 'Please login first to access'}) 
+   } 
+   
+   // Verify token 
+   let decoded
+   try { 
+      decoded = jwt.verify(token, 'my_secret') 
+      if(!decoded) { 
+         return res.status(400).json({ message: 'Invalid token'}) 
+      } 
+   } 
+   catch (error) { 
+      return res.status(400).json({ message: 'Invalid token'}) 
+   } 
+   
+   // set user data to request object 
+   const user = await User.findById(decoded._id) 
+   if(!user) { 
+      return res.status(404).json({ message: 'No user found'}) 
+   } 
+   req.user = user 
+
+   // Permission Granted 
+   next() 
+} 
 
 module.exports = { 
    signupUser, 
-   signinUser
+   signinUser, 
+   routeProtection
 } 
