@@ -37,9 +37,7 @@ app.listen(port, () => {
          useUnifiedTopology: true,
          autoIndex: true // for unique
       }, 
-      () => { 
-         console.log('DB connected'); 
-      } 
+      () => console.log('DB connected') 
    ) 
 }) 
 
