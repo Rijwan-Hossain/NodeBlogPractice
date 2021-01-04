@@ -51,10 +51,9 @@ const signinUser = async (req, res) => {
       // Create & send JWT token 
       const token = jwt.sign( 
          {_id: user._id}, 
-         'my_secret', 
+         process.env.JWT_SECRET, 
          {expiresIn: '24h'} 
       ) 
-
       res.status(200).json({ 
          status: 'Success', 
          token 

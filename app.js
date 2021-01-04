@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(morgan('tiny')) 
 
 // Port
-const port = process.env.PORT || 3000 
+const port = process.env.PORT 
 
 
 // App Routes
@@ -26,9 +26,9 @@ app.get('*', (req, res) => {
 
 // Running App
 app.listen(port, () => { 
-   console.log('App is running'); 
+   console.log('App is running on port: ' + port); 
    mongoose.connect( 
-      'mongodb://localhost:27017/myapp', 
+      process.env.DATABASE_URL, 
       { 
          useNewUrlParser: true, 
          useUnifiedTopology: true, 
