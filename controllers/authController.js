@@ -69,7 +69,7 @@ const signinUser = async (req, res) => {
 } 
 
 const routeProtection = async (req, res, next) => { 
-   // Get token 
+   // Get authorized user token 
    let token = req.headers.authorization 
    if(!token) { 
       return res.status(401).json({ message: 'Please login first to access'}) 
